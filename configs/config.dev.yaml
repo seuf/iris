@@ -128,6 +128,7 @@ vendors: []
 #  base_url: 'https://slack.com/api/chat.postMessage'
 #  iris_incident_url: ''
 #  proxy: *proxy_shared
+#  verify: /path/to/ca_cert.pem # <- used for mattermost integration
 #  message_attachments:
 #    fallback: 'Iris Alert Fired!'
 #    color: 'danger'

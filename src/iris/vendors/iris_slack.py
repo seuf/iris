@@ -30,6 +30,7 @@ class iris_slack(object):
         self.timeout = config.get('timeout', 10)
         self.message_attachments = self.config.get('message_attachments', {})
         push_config = config.get('push_notification', {})
+        self.verify = config.get('verify', True)
         self.push_active = push_config.get('activated', False)
         if self.push_active:
             self.notifier = import_custom_module('iris.push', push_config['type'])(push_config)
@@ -68,7 +69,7 @@ class iris_slack(object):
                 }
             ]
         }
-        return ujson.dumps([att_json])
+        return [att_json]
 
     def get_message_payload(self, message):
         slack_message = {
@@ -80,7 +81,7 @@ class iris_slack(object):
         # only add interactive button for incidents
         if 'incident_id' in message:
             slack_message['attachments'] = self.construct_attachments(message)
-        return slack_message
+        return ujson.dumps(slack_message)
 
     def get_destination(self, destination):
         # If the destination doesn't have '@' this adds it
@@ -93,9 +94,11 @@ class iris_slack(object):
         if self.push_active:
             self.notifier.send_push(message)
         payload = self.get_message_payload(message)
+        headers = {'Content-Type': 'application/json'}
         try:
             response = requests.post(self.config['base_url'],
                                      data=payload,
+                                     verify=self.verify,
                                      proxies=self.proxy,
                                      timeout=self.timeout)
             if response.status_code == 200:

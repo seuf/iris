@@ -74,6 +74,23 @@ Bot User OAuth Token
 Verification Token
   Found under "Settings" -> "Basic Information" -> "App Credentials"
 
+Mattermost integration
+----------------------
+
+Iris can send Mattermost messages through incomming webhook.
+
+#. Create incomming webhook
+
+  #. First, go to "Main Menu > Integrations > Incoming Webhook". If you don’t have the Integrations option in your Main Menu, incoming webhooks may not be enabled on your Mattermost server or may be disabled for non-admins. Enable them from "System Console > Integrations > Custom Integrations" or ask your System Administrator to do so.
+  #. Click "Add Incoming Webhook" and add name and description for the webhook.
+  #. Select the channel to receive webhook payloads, then click "Add" to create the webhook.
+
+#. Configure iris to use slack notification module.
+
+  #. uncomment the iris_slack section of your configuration file
+  #. set the base url to your mattermost incomming webhook url previouosly created.
+  #. if your mattermost use ssl, set the verify param to the CA path (or False if you don't want to verify mattermost certificate).
+
 
 Updating Iris configs
 `````````````````````
